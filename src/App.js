@@ -1,6 +1,9 @@
-import React from 'react';
-import Badge from 'react-bootstrap/Badge'
+import React,{useState} from 'react';
+import Badge from 'react-bootstrap/Badge';
+import marked from 'marked';
+import'./App.css'
 function App() {
+const [markdown,setMarkdown] = useState("")
 
   const inputStyle = {
     width: "400px",
@@ -18,8 +21,12 @@ function App() {
     padding: "10px"
   }
 
-
-
+  const updateMarkdown=(markdown)=>{
+    setMarkdown(markdown)
+  }
+  const resetMarkdown = ()=>{
+    setMarkdown('')
+  }
 
   return (
     <div className="App">
@@ -33,6 +40,11 @@ function App() {
             </h1>
           </div>
         </div>
+        <div className="row mt-3">
+          <div className="col text-center">
+          <button onClick={resetMarkdown} className="btn btn-danger">Reset</button>
+          </div>
+        </div>
         <div className="row mt-4">
           <div className="col-md-6">
             <div className="col text-center">
@@ -42,8 +54,11 @@ function App() {
                   </Badge>
               </h4>
               <div className="mark-input">
-                <textarea style={inputStyle} className="input">
-
+                <textarea 
+                  style={inputStyle} 
+                  className="input"
+                  value={markdown}
+                  onChange={(e)=>{updateMarkdown(e.target.value)}}>
                 </textarea>
               </div>
             </div>
@@ -56,10 +71,17 @@ function App() {
                   Preview
                   </Badge>
               </h4>
-              <div style={outputStyle}></div>
+              <div  
+                style={outputStyle} 
+                dangerouslySetInnerHTML={{__html: marked(markdown)}}>
+
+              </div>
             </div>
           </div>
+      
+
         </div>
+    
       </div>
     </div>
   );

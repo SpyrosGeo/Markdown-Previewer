@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
 import Badge from 'react-bootstrap/Badge';
 import marked from 'marked';
-import'./App.css'
+const purify = require('dompurify');
+
 function App() {
 const [markdown,setMarkdown] = useState("")
 
@@ -26,6 +27,13 @@ const [markdown,setMarkdown] = useState("")
   }
   const resetMarkdown = ()=>{
     setMarkdown('')
+  }
+
+  const getMarkdownText = (markdown) =>{
+    let rawMarkup = marked(markdown);
+    //sanitize 
+    let cleanMarkup = purify.sanitize(rawMarkup)
+    return {__html: cleanMarkup};
   }
 
   return (
@@ -73,7 +81,7 @@ const [markdown,setMarkdown] = useState("")
               </h4>
               <div  
                 style={outputStyle} 
-                dangerouslySetInnerHTML={{__html: marked(markdown)}}>
+                dangerouslySetInnerHTML={getMarkdownText(markdown)}>
 
               </div>
             </div>
